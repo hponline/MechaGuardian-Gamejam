@@ -3,34 +3,79 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    PlayerInput playerInput;
+    public static PlayerController instance;
 
+    [Header("References")]
+    [SerializeField] InputHandler inputHandler;
     public Transform cameraTransform;
-    public float speed = 3f;
+
+    [Header("Variables")]
+    public float speedWalk = 3f;
+    //public float cameraRotateSpeed = 3f;
+    //public float mouseAffectRadius = 2f;
+    public bool isWalking = false;
     public bool isAttack = false;
 
-    private void Awake()
+    void Awake()
     {
-        playerInput = new PlayerInput();
-
-        playerInput.Player.Enable();
+        instance = this;
     }
 
-    public Vector2 GetMoveDirection()
+    void Update()
     {
-        Vector2 inputVector = playerInput.Player.Move.ReadValue<Vector2>();
-        inputVector = inputVector.normalized;
-        return inputVector;
+        PlayerMovement();
+        //CameraMouseFollow();
+        // wasd ile gidiyoruz mausun baktýgý yön karakterin z ekseni oluyor 
     }
 
-    public void OnAttack(InputAction.CallbackContext ctx)
+    void PlayerMovement()
     {
-        if (ctx.performed) 
-            isAttack = true;
+        Vector2 inputVector = inputHandler.GetMoveDirection();
+
+        Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y);
+
+        if (moveDirection.sqrMagnitude > 0.0001f)
+        {
+            transform.position += moveDirection.normalized * speedWalk * Time.deltaTime;
+            isWalking = true;
+        }
+        else
+        {
+            isWalking = false;
+        }
     }
 
-    public void CharacterMove()
+    //void CameraMouseFollow()
+    //{
+    //    Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+    //    Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+
+    //    if (!groundPlane.Raycast(ray, out float enter))
+    //        return;
+
+    //    Vector3 mouseWorldPos = ray.GetPoint(enter);
+
+    //    float distance = Vector3.Distance(mouseWorldPos, transform.position);
+    //    if (distance > mouseAffectRadius)
+    //        return;
+
+    //    Vector3 lookDirection = (mouseWorldPos - transform.position);
+    //    lookDirection.y = 0;
+
+    //    if (lookDirection.sqrMagnitude < 0.001f)
+    //        return;
+
+    //    Quaternion targetRot = Quaternion.LookRotation(lookDirection);
+
+    //    cameraTransform.rotation = Quaternion.Slerp(
+    //        cameraTransform.rotation,
+    //        targetRot,
+    //        Time.deltaTime * cameraRotateSpeed
+    //    );
+    //}
+
+    public void PlayerAttack()
     {
-        //cameraTransform.forward
+        if (!isAttack) return;
     }
 }
