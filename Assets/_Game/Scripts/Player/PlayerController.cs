@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -11,10 +11,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Variables")]
     public float speedWalk = 3f;
-    //public float cameraRotateSpeed = 3f;
-    //public float mouseAffectRadius = 2f;
     public bool isWalking = false;
     public bool isAttack = false;
+    public float rotationSpeed = 3f;
 
     void Awake()
     {
@@ -24,8 +23,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         PlayerMovement();
-        //CameraMouseFollow();
-        // wasd ile gidiyoruz mausun bakt�g� y�n karakterin z ekseni oluyor 
+        RotateTowardsMouse();
+
+        // karakter ateş ettme mekanigi
     }
 
     void PlayerMovement()
@@ -45,37 +45,44 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //void CameraMouseFollow()
-    //{
-    //    Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-    //    Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+    void RotateTowardsMouse()
+    {
+        if (Camera.main == null)
+            return;
 
-    //    if (!groundPlane.Raycast(ray, out float enter))
-    //        return;
+        // Mouse ray
+        Ray ray = Camera.main.ScreenPointToRay(
+            Mouse.current.position.ReadValue()
+        );
 
-    //    Vector3 mouseWorldPos = ray.GetPoint(enter);
+        // Y düzlemi (zemin)
+        Plane groundPlane = new Plane(Vector3.up, transform.position);
 
-    //    float distance = Vector3.Distance(mouseWorldPos, transform.position);
-    //    if (distance > mouseAffectRadius)
-    //        return;
+        if (!groundPlane.Raycast(ray, out float enter))
+            return;
 
-    //    Vector3 lookDirection = (mouseWorldPos - transform.position);
-    //    lookDirection.y = 0;
+        Vector3 mouseWorldPos = ray.GetPoint(enter);
 
-    //    if (lookDirection.sqrMagnitude < 0.001f)
-    //        return;
+        // Karakter → mouse yönü
+        Vector3 lookDir = mouseWorldPos - transform.position;
+        lookDir.y = 0f;
 
-    //    Quaternion targetRot = Quaternion.LookRotation(lookDirection);
+        if (lookDir.sqrMagnitude < 0.001f)
+            return;
 
-    //    cameraTransform.rotation = Quaternion.Slerp(
-    //        cameraTransform.rotation,
-    //        targetRot,
-    //        Time.deltaTime * cameraRotateSpeed
-    //    );
-    //}
+        Quaternion targetRotation = Quaternion.LookRotation(lookDir);
+
+        // Yumuşak dönüş
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRotation,
+            rotationSpeed * Time.deltaTime
+        );
+    }
 
     public void PlayerAttack()
     {
         if (!isAttack) return;
     }
+    
 }
