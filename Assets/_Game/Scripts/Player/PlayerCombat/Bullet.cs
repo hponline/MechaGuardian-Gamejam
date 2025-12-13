@@ -2,15 +2,26 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public float bulletSpeed = 30f;
+    public float destroyTime = 2f;
+
+
+    private void Start()
     {
-        
+        Destroy(gameObject, destroyTime);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        transform.position += transform.forward * bulletSpeed * Time.deltaTime;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            EnemyHealt enemy = other.GetComponent<EnemyHealt>();
+            enemy.TakeDamage(PlayerCombat.instance.ShooterAttackDamage);
+        }
     }
 }
