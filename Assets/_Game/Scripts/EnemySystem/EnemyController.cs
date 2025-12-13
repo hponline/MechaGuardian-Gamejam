@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using Game.Combat;
+using UnityEngine.AI;
 
 namespace Game.Enemy
 {

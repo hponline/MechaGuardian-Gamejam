@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public float bulletSpeed = 10f;
+    public float destroyTime = 5f;
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        Destroy(gameObject, destroyTime);
+    }
+    private void Update()
+    {
+        transform.position += transform.forward * bulletSpeed * Time.deltaTime;
     }
 }
