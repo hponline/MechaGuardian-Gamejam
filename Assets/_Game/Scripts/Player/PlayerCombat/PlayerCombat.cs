@@ -4,6 +4,10 @@ public class PlayerCombat : MonoBehaviour
 {
     public static PlayerCombat instance;
 
+    [Header("Player")]
+    public int maxHealt = 100;
+    [SerializeField] int currentHealth;
+
     [Header("References")]
     public Transform firePoint;
 
@@ -15,7 +19,6 @@ public class PlayerCombat : MonoBehaviour
     public bool shooterIsAttacking = false;
 
     [Header("Laser Attack")]
-    //public Transform laserBulletPrefab;
     public LaserDamage laserDamage;
     public ParticleSystem laserParticlePrefab;
     public float laserFireRate = 3f;
@@ -26,9 +29,16 @@ public class PlayerCombat : MonoBehaviour
     public float laserActiveDuration = 3f; // Laserin açýk kaldýgý süre
     public bool laserIsAttacking = false;
 
+    [Header("Barrier stats ")]
+    public PlayerBarrier playerShield;
+    public int maxShiled = 100;
+
+
     private void Awake()
     {
         instance = this;
+
+        currentHealth = maxHealt;
     }
 
     private void Update()
@@ -37,7 +47,6 @@ public class PlayerCombat : MonoBehaviour
 
         UpdateAttackState();
     }
-
 
     void UpdateAttackState()
     {
@@ -54,7 +63,7 @@ public class PlayerCombat : MonoBehaviour
             {
                 StopLaser();
             }
-        }
+        }        
     }
 
     public void PlayerAttack()
@@ -67,15 +76,6 @@ public class PlayerCombat : MonoBehaviour
         shooterAttackTimer = 0;
         Debug.Log("Shooter Ateþ etti");
         // vfx/sound
-    }
-    void StopLaser()
-    {
-        if (laserParticlePrefab.isPlaying)
-            laserParticlePrefab.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-
-        laserIsAttacking = false;
-        laserActiveTimer = 0;
-        laserDamage.StopLaser();
     }
 
     public void PlayerLaserAttack()
@@ -92,7 +92,42 @@ public class PlayerCombat : MonoBehaviour
         laserDamage.StartLaser();
         Debug.Log("Laser Ateþ etti");
         // vfx/sound
+    }
+    void StopLaser()
+    {
+        if (laserParticlePrefab.isPlaying)
+            laserParticlePrefab.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 
+        laserIsAttacking = false;
+        laserActiveTimer = 0;
+        laserDamage.StopLaser();
+    }
+
+    public void PlayerUseShield()
+    {
+        if (playerShield.isShieldActive) return;
+        playerShield.ActiveShield();
+        Debug.Log("Player Shield kullandý");
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (playerShield != null)
+            damage = playerShield.AbsorbDamage(damage);
+
+        if (damage <= 0) return;
+
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        Debug.Log("Player öldü");
     }
 
 }
