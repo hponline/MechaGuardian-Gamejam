@@ -34,8 +34,8 @@ public class InputHandler : MonoBehaviour
         if (ctx.ReadValueAsButton())
         {
             Debug.Log("Ateþ etti");
-            if (PlayerController.instance != null)
-                PlayerController.instance.PlayerAttack();
+            if (PlayerCombat.instance != null)
+                PlayerCombat.instance.PlayerAttack();
         }
     }
 }

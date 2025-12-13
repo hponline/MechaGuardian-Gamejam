@@ -7,13 +7,14 @@ public class PlayerController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] InputHandler inputHandler;
+
     public Transform cameraTransform;
 
     [Header("Variables")]
-    public float speedWalk = 3f;
-    public bool isWalking = false;
-    public bool isAttack = false;
-    public float rotationSpeed = 3f;
+    public float speedWalk = 10f;
+    public bool isWalking = false;    
+    public float rotationSpeed = 10f;
+
 
     void Awake()
     {
@@ -23,9 +24,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         PlayerMovement();
-        RotateTowardsMouse();
-
-        // karakter ateş ettme mekanigi
+        RotateTowardsMouse();     
     }
 
     void PlayerMovement()
@@ -50,20 +49,16 @@ public class PlayerController : MonoBehaviour
         if (Camera.main == null)
             return;
 
-        // Mouse ray
         Ray ray = Camera.main.ScreenPointToRay(
             Mouse.current.position.ReadValue()
         );
 
         // Y düzlemi (zemin)
         Plane groundPlane = new Plane(Vector3.up, transform.position);
-
         if (!groundPlane.Raycast(ray, out float enter))
             return;
 
         Vector3 mouseWorldPos = ray.GetPoint(enter);
-
-        // Karakter → mouse yönü
         Vector3 lookDir = mouseWorldPos - transform.position;
         lookDir.y = 0f;
 
@@ -71,8 +66,6 @@ public class PlayerController : MonoBehaviour
             return;
 
         Quaternion targetRotation = Quaternion.LookRotation(lookDir);
-
-        // Yumuşak dönüş
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             targetRotation,
@@ -80,9 +73,6 @@ public class PlayerController : MonoBehaviour
         );
     }
 
-    public void PlayerAttack()
-    {
-        if (!isAttack) return;
-    }
+    
     
 }
