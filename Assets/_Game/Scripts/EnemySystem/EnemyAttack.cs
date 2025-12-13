@@ -7,7 +7,7 @@ using Game.Combat;
 namespace Game.Enemy
 {
     // Enemy'nin SADECE saldýrý logic'i
-    public sealed class EnemyAttack : MonoBehaviour
+    public class EnemyAttack : MonoBehaviour
     {
         [SerializeField] private int damage = 10;
         [SerializeField] private float attackInterval = 1f;

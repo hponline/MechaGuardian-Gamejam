@@ -20,6 +20,17 @@ namespace Game.Spawning
         // Enemy’lerin gideceði Base
         [SerializeField] private BaseTarget baseTarget;
 
+        private void Awake()
+        {
+            baseTarget = GameObject.FindGameObjectWithTag("BASE").GetComponent<BaseTarget>();
+        }
+
+        private void Start()
+        {
+            SpawnTest();
+
+        }
+
         // Enemy spawn iþlemi
         public void Spawn()
         {

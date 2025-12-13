@@ -1,8 +1,15 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/ThirdParty/Free Game VFX/Materials/stone03.mat.meta
 guid: f2323be95990437418cb4099e9cdfde9
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000
+========
+guid: 503a1d45331f4d04aad923b2743cdb68
+folderAsset: yes
+DefaultImporter:
+  externalObjects: {}
+>>>>>>>> Stashed changes:Assets/ThirdParty/Free Game VFX/Animator.meta
   userData: 
   assetBundleName: 
   assetBundleVariant: 

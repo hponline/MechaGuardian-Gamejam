@@ -1,36 +1,78 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    PlayerInput playerInput;
+    public static PlayerController instance;
+
+    [Header("References")]
+    [SerializeField] InputHandler inputHandler;
 
     public Transform cameraTransform;
-    public float speed = 3f;
-    public bool isAttack = false;
 
-    private void Awake()
+    [Header("Variables")]
+    public float speedWalk = 10f;
+    public bool isWalking = false;    
+    public float rotationSpeed = 10f;
+
+
+    void Awake()
     {
-        playerInput = new PlayerInput();
-
-        playerInput.Player.Enable();
+        instance = this;
     }
 
-    public Vector2 GetMoveDirection()
+    void Update()
     {
-        Vector2 inputVector = playerInput.Player.Move.ReadValue<Vector2>();
-        inputVector = inputVector.normalized;
-        return inputVector;
+        PlayerMovement();
+        RotateTowardsMouse();     
     }
 
-    public void OnAttack(InputAction.CallbackContext ctx)
+    void PlayerMovement()
     {
-        if (ctx.performed) 
-            isAttack = true;
+        Vector2 inputVector = inputHandler.GetMoveDirection();
+
+        Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y);
+
+        if (moveDirection.sqrMagnitude > 0.0001f)
+        {
+            transform.position += moveDirection.normalized * speedWalk * Time.deltaTime;
+            isWalking = true;
+        }
+        else
+        {
+            isWalking = false;
+        }
     }
 
-    public void CharacterMove()
+    void RotateTowardsMouse()
     {
-        //cameraTransform.forward
+        if (Camera.main == null)
+            return;
+
+        Ray ray = Camera.main.ScreenPointToRay(
+            Mouse.current.position.ReadValue()
+        );
+
+        // Y düzlemi (zemin)
+        Plane groundPlane = new Plane(Vector3.up, transform.position);
+        if (!groundPlane.Raycast(ray, out float enter))
+            return;
+
+        Vector3 mouseWorldPos = ray.GetPoint(enter);
+        Vector3 lookDir = mouseWorldPos - transform.position;
+        lookDir.y = 0f;
+
+        if (lookDir.sqrMagnitude < 0.001f)
+            return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(lookDir);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRotation,
+            rotationSpeed * Time.deltaTime
+        );
     }
+
+    
+    
 }
