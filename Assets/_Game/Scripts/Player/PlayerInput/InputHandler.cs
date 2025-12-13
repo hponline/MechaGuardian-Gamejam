@@ -33,7 +33,9 @@ public class InputHandler : MonoBehaviour
     {
         if (ctx.ReadValueAsButton())
         {
-            PlayerCombat.instance.PlayerAttack();            
+            PlayerCombat.instance.PlayerAttack();
+            PlayerCombat.instance.PlayerLaserAttack();
+            Debug.Log("Shooter/Laser ateþlendi");
         }
     }
 }

@@ -16,10 +16,12 @@ public class PlayerCombat : MonoBehaviour
 
     [Header("Laser Attack")]
     public Transform laserBulletPrefab;
+    public GameObject laserPrefab;
     public float laserFireRate = 0.3f;
     public float laserAttackDamage = 10f;
     public float laserAttackRange = 10f;
     public float laserAttackTimer = 0;
+    public float laserActiveTimer = 3f;
     public bool laserIsAttacking = false;
 
     private void Awake()
@@ -31,16 +33,38 @@ public class PlayerCombat : MonoBehaviour
     {
         // karakter ateþ ettme mekanigi
         shooterAttackTimer += Time.deltaTime;
-        if (shooterAttackTimer >= ShooterFireRate)
-            shooterIsAttacking = false;
-        else
-            shooterIsAttacking = true;
+        laserAttackTimer += Time.deltaTime;
+        laserActiveTimer += Time.deltaTime;
 
+
+        ShooterTimer();
+        LaserTimer();
+        
+
+    }
+
+    public void LaserTimer()
+    {
         if (laserAttackTimer >= laserFireRate)
             laserIsAttacking = false;
         else
+        {
             laserIsAttacking = true;
+            // laser kapatma yap
+            //if (laserActiveTimer > 3)
+            //{
+            //    laserPrefab.SetActive(false);
+            //    laserActiveTimer = 0f;
+            //}
+        }
+    }
 
+    public void ShooterTimer()
+    {
+        if (shooterAttackTimer >= ShooterFireRate)
+            shooterIsAttacking = false;
+        else
+            shooterIsAttacking = true;        
     }
 
     public void PlayerAttack()
@@ -57,9 +81,10 @@ public class PlayerCombat : MonoBehaviour
 
     public void PlayerLaserAttack()
     {
-        if (laserAttackTimer >= ShooterFireRate)
+        if (laserAttackTimer >= laserFireRate)
         {
-            Instantiate(shooterBulletPrefab, firePoint.position, transform.rotation);
+            //Instantiate(shooterBulletPrefab, firePoint.position, transform.rotation);
+            laserPrefab.SetActive(true);
             laserIsAttacking = true;
             laserAttackTimer = 0;
             Debug.Log("Laser Ateþ etti");
