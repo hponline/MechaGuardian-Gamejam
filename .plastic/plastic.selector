@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 repository "(Ellen)Unity-Learn/startGateJam@18967685531452@cloud"
+=======
+repository "startGateJam/StartGate_Gamejam@18967844618993@cloud"
+>>>>>>> a8f4cebd264f93ab90b54dd75989e8cd2e72583c
   path "/"
     br "/main"
     co "/main"
