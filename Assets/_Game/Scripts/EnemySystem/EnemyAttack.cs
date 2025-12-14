@@ -13,9 +13,16 @@ namespace Game.Enemy
         [SerializeField] private float attackInterval = 1f;
         [SerializeField] private float attackRange = 1.5f;
 
+        public Animator animator;
+
         private float lastAttackTime;
         private BaseHealth targetHealth;
         private Transform targetTransform;
+
+        private void Start()
+        {
+            animator = GetComponent<Animator>();
+        }
 
         // EnemyController tarafýndan çaðrýlýr
         public void Initialize(BaseTarget baseTarget)
@@ -39,6 +46,7 @@ namespace Game.Enemy
             if (Time.time - lastAttackTime < attackInterval) return;
 
             lastAttackTime = Time.time;
+            animator.SetTrigger("isAttack");
             targetHealth.TakeDamage(damage);
         }
     }

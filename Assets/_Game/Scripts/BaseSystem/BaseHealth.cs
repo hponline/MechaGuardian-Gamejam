@@ -8,6 +8,7 @@ namespace Game.Combat
     public sealed class BaseHealth : MonoBehaviour
     {
         [SerializeField] private int maxHealth = 1000;
+        [SerializeField] EnemyHealthBar healthBar;
 
         private int currentHealth;
 
@@ -21,7 +22,7 @@ namespace Game.Combat
         {
             currentHealth -= damage;
             currentHealth = Mathf.Max(currentHealth, 0);
-
+            healthBar.UpdateHealhtBar(maxHealth, currentHealth);
             UnityEngine.Debug.Log($"Base Damage aldý! Kalan HP: {currentHealth}");
 
             if (currentHealth <= 0)
