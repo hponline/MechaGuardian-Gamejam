@@ -22,7 +22,7 @@ namespace Game.Combat
             currentHealth -= damage;
             currentHealth = Mathf.Max(currentHealth, 0);
 
-            Debug.Log($"Base Damage aldý! Kalan HP: {currentHealth}");
+            UnityEngine.Debug.Log($"Base Damage aldý! Kalan HP: {currentHealth}");
 
             if (currentHealth <= 0)
             {
@@ -32,7 +32,7 @@ namespace Game.Combat
 
         private void OnBaseDestroyed()
         {
-            Debug.Log("BASE YIKILDI!");
+            UnityEngine.Debug.Log("BASE YIKILDI!");
             // Game Over logic’i ileride buraya
         }
     }

@@ -19,7 +19,7 @@ namespace Game.Spawning
         {
             if (spawnPoints.Count == 0)
             {
-                Debug.LogError("SpawnPointGroup boþ!");
+                UnityEngine.Debug.Log("SpawnPointGroup boþ!");
                 return null;
             }
 
