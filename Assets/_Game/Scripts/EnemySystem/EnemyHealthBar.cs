@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class EnemyHealthBar : MonoBehaviour
 {
     Camera _cam;
-    Image _healthBar;
+    [SerializeField]Image _healthBar;
 
     void Start()
     {
@@ -19,6 +19,5 @@ public class EnemyHealthBar : MonoBehaviour
     public void UpdateHealhtBar(float maxHealth, float currentHealth)
     {
         _healthBar.fillAmount = currentHealth / maxHealth;
-        Debug.Log("Update içinde çalýþtýr");
     }
 }

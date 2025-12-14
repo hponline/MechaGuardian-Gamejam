@@ -32,12 +32,11 @@ public class PlayerHealth : MonoBehaviour
         {
             Die();
         }
-
     }
 
     public void Die()
     {
-        Debug.Log("Player öldü");
+        Debug.Log("Player öldü \nRestart ekraný yap");
     }
 
     private void OnTriggerEnter(Collider other)
