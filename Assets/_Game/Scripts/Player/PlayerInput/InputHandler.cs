@@ -15,6 +15,7 @@ public class InputHandler : MonoBehaviour
         playerInput.Player.Move.canceled += ctx => moveInput = Vector2.zero;
 
         playerInput.Player.Attack.performed += OnAttack;
+        playerInput.Player.Skills.performed += OnShieldSkill;
     }
 
     private void OnDisable()
@@ -22,6 +23,7 @@ public class InputHandler : MonoBehaviour
         playerInput.Player.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
         playerInput.Player.Move.canceled -= ctx => moveInput = Vector2.zero;
         playerInput.Player.Attack.performed -= OnAttack;
+        playerInput.Player.Skills.performed -= OnShieldSkill;
     }
 
     public Vector2 GetMoveDirection()
@@ -37,5 +39,11 @@ public class InputHandler : MonoBehaviour
             PlayerCombat.instance.PlayerLaserAttack();
             Debug.Log("Shooter/Laser ateþlendi");
         }
+    }
+
+    public void OnShieldSkill(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+        PlayerCombat.instance.PlayerUseShield();
     }
 }

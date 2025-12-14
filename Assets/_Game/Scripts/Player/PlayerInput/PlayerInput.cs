@@ -111,7 +111,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Skills"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""60e58165-31a9-4b1a-804a-3974c04465ad"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -189,7 +189,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2db2dfe0-b9e2-4633-a995-ab8daed786eb"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
